@@ -9,7 +9,7 @@ class ProductItem {
         this.count = 0
     }
     render() {
-        return `<div class="product-item"> 
+        return `<div class="product-item" data-id="${this.id}"> 
                     <h3>${this.title}</h3>
                     <img class="img-src" src="${this.imgSrc}"  alt="${this.title}">
                     <p>${this.price} рублей</p>
@@ -28,6 +28,7 @@ class Catalog {
         this.startedPrice = 0
         this.addButtonSelector = addButtonSelector
         this.cart = cart
+        this.filteredItems = []
 
         this.#init()
     }
@@ -38,6 +39,7 @@ class Catalog {
                 this.#renderPage()
             })
         this.#eventsHandler()
+        document.querySelector('.filter-catalog').addEventListener('input', (event) => this.#filter(event))
     }
     #eventsHandler() {
         const allPriceButton = document.querySelector(`${this.allPriceSelector}`)
@@ -70,6 +72,7 @@ class Catalog {
         for (const product of this.productsFetch) {
             const productObj = new ProductItem(product)
             this.products.push(productObj)
+            this.filteredItems.push(productObj)
 
             productContainer.insertAdjacentHTML('beforeend', productObj.render())
         }
@@ -106,6 +109,24 @@ class Catalog {
             this.cart.setRawCartItemsArr(neededItem)
             this.cart.render()
         }
+    }
+    #filter(event) {
+        const name = document.querySelector('.filter-catalog').value
+        if (name.length <= 2 && name.length > 0) {
+            return
+        }
+        const regExp = new RegExp(name, 'i')
+
+        this.filteredItems = this.products.filter(item => regExp.test(item.title))
+        this.products.forEach(item => {
+            const block = document.querySelector(`.product-item[data-id="${item.id}"]`)
+
+            if (!this.filteredItems.includes(item)) {
+                block.classList.add('hidden')
+            } else {
+                block.classList.remove('hidden')
+            }
+        })
     }
 }
 
@@ -243,3 +264,4 @@ class Cart {
 
 const cart = new Cart()
 const catalog = new Catalog()
+
