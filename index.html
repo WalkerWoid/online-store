@@ -15,55 +15,22 @@
 
     <div class="container">
         <header>
-            <div class="filter__container">
-                <form action="#">
-                    <input class="filter-catalog" type="text" placeholder="Поиск по каталогу..."
-                           v-model="inputText" @input="cartFilter">
-                </form>
-            </div>
-            <div class="cart__container">
-                <button class="cart-btn purp-btn" type="button"
-                        @click="changeCartVisibility">Корзина</button>
-
-                <div class="cart" :class="{hidden: !cartVisibility}">
-                    <p v-show="isCartEmpty">Корзина пуста...</p>
-                    <div class="cart-item"
-                         v-for="cartProduct of cartProducts"
-                         :data-id="cartProduct.id"
-                         :key="cartProduct.id">
-                        <h3>{{cartProduct.title}}</h3>
-                        <img class="img-src" :src="imgSrc" :alt="cartProduct.title">
-                        <p>{{cartProduct.price}} рублей</p>
-                        <p>Количество: <span class="cart-item__count">{{cartProduct.count}}</span></p>
-                        <button class="del-btn purp-btn"
-                                :data-id="cartProduct.id" @click="deleteFromCart(cartProduct)">Убрать</button>
-                    </div>
-
-                    <p>Общая стоимость корзины: {{allPriceCart}}</p>
-                </div>
-
-
-            </div>
+            <search-field ref="search"></search-field>
+            <cart ref="cart"></cart>
         </header>
 
         <main>
-            <div class="products__container">
-                <div class="product-item"
-                     v-for="product of products"
-                     :data-id="product.id"
-                     :key="product.id">
-                    <h3>{{product.title}}</h3>
-                    <img class="img-src" :src="imgSrc" :alt="product.title">
-                    <p>{{product.price}} рублей</p>
-                    <button class="buy-btn purp-btn" :data-id="product.id" @click="addToCart(product)">Купить</button>
-                </div>
-            </div>
+            <catalog ref="catalog"></catalog>
         </main>
     </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="script/errorCatalog.js"></script>
+<script src="script/filter.js"></script>
+<script src="script/cart.js"></script>
+<script src="script/catalog.js"></script>
 <script defer src="script/script.js"></script>
 </body>
 </html>
